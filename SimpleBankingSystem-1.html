@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CDM Exclusive Banking System</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+body, html { margin:0; padding:0; font-family:'Inter',sans-serif; background:#0a0f0c; color:#fff; min-height:100vh; }
+
+/* Login Container */
+.login-container { display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; }
+.login-logo img { width:80px; margin-bottom:15px; }
+.login-card { background:linear-gradient(135deg,#121817,#0a0f0c); padding:36px 30px; border-radius:20px; width:350px; box-shadow:0 8px 32px rgba(0,0,0,0.6), inset 0 0 10px #03ffa1; text-align:center; }
+.login-title { font-weight:600; font-size:24px; margin-bottom:6px; }
+.login-subtitle { font-weight:400; font-size:14px; color:#9ca3af; margin-bottom:28px; }
+.tabs { display:flex; background:#111b17; border-radius:40px; overflow:hidden; margin-bottom:30px; }
+.tab { flex:1; text-align:center; padding:10px 0; cursor:pointer; font-weight:600; font-size:14px; color:#6b7280; transition:0.3s; }
+.tab.active { background:#03ffa1; color:#0a0f0c; }
+
+/* Inputs */
+.input-group { margin-bottom:18px; }
+input { width:70%; padding:10px; border-radius:10px; border:none; background:#111b17; color:#fff; font-weight:600; font-size:13px; box-shadow:inset 0 0 6px #03ffa1; }
+input::placeholder { color:#6b7280; font-weight:400; }
+input:focus { outline:none; background:#0f251d; }
+
+/* Buttons */
+.action-btn { width:70%; padding:14px; background:#03ffa1; color:#0a0f0c; border:none; border-radius:12px; font-weight:700; font-size:16px; cursor:pointer; box-shadow:0 8px 20px #03ffa1; transition:0.3s; }
+.action-btn:hover { background:#02d88e; box-shadow:0 12px 25px #02d88e; }
+.action-btn-small { width:40%; padding:8px; font-size:12px; border-radius:8px; font-weight:600; background:#03ffa1; color:#0a0f0c; border:none; cursor:pointer; box-shadow:0 4px 10px #03ffa1; transition:0.3s; }
+.action-btn-small:hover { background:#02d88e; box-shadow:0 6px 15px #02d88e; }
+
+/* Dashboard */
+.wrapper { display:flex; min-height:100vh; background:#0a0f0c; }
+.sidebar { width:220px; background:#121817; padding:25px 15px; display:flex; flex-direction:column; align-items:center; }
+.sidebar h2 { margin-bottom:25px; font-size:20px; }
+.sidebar button { width:100%; margin:6px 0; padding:10px 0; border:none; background:#1e293b; color:white; border-radius:8px; font-weight:500; cursor:pointer; }
+.sidebar button:hover { background:#334155; }
+.main { flex:1; padding:20px; overflow-y:auto; }
+.card { background:#111b17; padding:18px; border-radius:15px; margin-bottom:20px; box-shadow:0 4px 12px rgba(0,0,0,0.4); }
+.balance { font-size:24px; color:#03ffa1; font-weight:600; margin-top:10px; }
+table { width:100%; border-collapse:collapse; }
+th, td { border:1px solid #333; padding:8px; text-align:center; color:#fff; }
+th { background:#03ffa1; color:#0a0f0c; }
+.hidden { display:none; }
+
+/* Marquee */
+.marquee { width:100%; overflow:hidden; background:#03ffa1; color:#0a0f0c; padding:6px 0; font-weight:600; }
+.marquee span { display:inline-block; padding-left:100%; white-space:nowrap; animation: marquee 15s linear infinite; }
+@keyframes marquee { 0%{ transform:translateX(0); } 100%{ transform:translateX(-100%); } }
+
+/* Dashboard Input Boxes - Short */
+.main input { width:50%; padding:8px; margin-bottom:10px; border-radius:8px; border:none; background:#111b17; color:#fff; font-weight:600; font-size:13px; box-shadow:inset 0 0 5px #03ffa1; }
+</style>
+</head>
+<body>
+
+<!-- LOGIN PAGE -->
+<div id="loginScreen" class="login-container">
+  <div class="login-logo"><img src="c:\Users\DESKTOP\Pictures\c.png" alt="CDM Bank Logo"></div>
+  <div class="login-card">
+    <h1 class="login-title">CDM Simple Banking System</h1>
+    <p class="login-subtitle">Premium Banking Experience</p>
+
+    <div class="tabs">
+      <button id="loginTab" class="tab active" onclick="showLogin()">Login</button>
+      <button id="createTab" class="tab" onclick="showCreate()">Create Account</button>
+    </div>
+
+    <div id="loginForm">
+      <div class="input-group"><input type="text" id="loginAcc" placeholder="Account Number"></div>
+      <div class="input-group"><input type="password" id="loginPin" placeholder="PIN"></div>
+      <button class="action-btn" onclick="login()">Access Vault</button>
+      <p id="loginMsg" style="color:#f87171;margin-top:12px;"></p>
+    </div>
+
+    <div id="createForm" class="hidden">
+      <div class="input-group"><input type="text" id="newName" placeholder="Full Name"></div>
+      <div class="input-group"><input type="password" id="newPin" placeholder="Create PIN"></div>
+      <button class="action-btn" onclick="createAccount()">Create Account</button>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="app" class="wrapper hidden">
+  <div class="sidebar">
+    <h2>🏦 CDM Bank</h2>
+    <button onclick="showPage('dashboard')">Dashboard</button>
+    <button onclick="showPage('deposit')">Deposit</button>
+    <button onclick="showPage('withdraw')">Withdraw</button>
+    <button onclick="showPage('transfer')">Transfer</button>
+    <button onclick="showPage('transactions')">Transactions</button>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <div class="main">
+    <div class="marquee"><span>CDM Simple Banking System | CCPROG2 | Daniel B. Sto. Domingo Jr. | Ron Angelo Albar |</span></div>
+
+    <div id="dashboardPage" class="page"><div class="card"><h2 id="welcome"></h2><div class="balance" id="balance"></div></div></div>
+    <div id="depositPage" class="page hidden"><div class="card"><h2>Deposit</h2><input id="depositAmount" placeholder="Amount"><button class="action-btn-small" onclick="deposit()">Deposit</button></div></div>
+    <div id="withdrawPage" class="page hidden"><div class="card"><h2>Withdraw</h2><input id="withdrawAmount" placeholder="Amount"><button class="action-btn-small" onclick="withdraw()">Withdraw</button></div></div>
+    <div id="transferPage" class="page hidden"><div class="card"><h2>Transfer Money</h2><input id="transferAccount" placeholder="Recipient Account #"><input id="transferAmount" placeholder="Amount"><button class="action-btn-small" onclick="transfer()">Send</button></div></div>
+    <div id="transactionsPage" class="page hidden"><div class="card"><h2>Transaction History</h2><table><thead><tr><th>#</th><th>Type</th><th>Amount</th><th>Date</th></tr></thead><tbody id="transactionTable"></tbody></table></div></div>
+  </div>
+</div>
+
+<script>
+// Toggle forms
+function showLogin(){ document.getElementById('loginForm').classList.remove('hidden'); document.getElementById('createForm').classList.add('hidden'); document.getElementById('loginTab').classList.add('active'); document.getElementById('createTab').classList.remove('active'); document.getElementById('loginMsg').innerText=''; }
+function showCreate(){ document.getElementById('loginForm').classList.add('hidden'); document.getElementById('createForm').classList.remove('hidden'); document.getElementById('createTab').classList.add('active'); document.getElementById('loginTab').classList.remove('active'); document.getElementById('loginMsg').innerText=''; }
+
+// Accounts
+let accounts = JSON.parse(localStorage.getItem("accounts")) || [];
+let currentUser = null;
+function generateAccount(){ return Math.floor(100000+Math.random()*900000).toString(); }
+
+// Create Account
+function createAccount(){
+let name=document.getElementById("newName").value.trim();
+let pin=document.getElementById("newPin").value.trim();
+if(!/^[A-Za-z\s]+$/.test(name)){ alert("Account Name must contain letters only."); return; }
+if(!/^\d+$/.test(pin)){ alert("PIN must contain numbers only."); return; }
+let number;
+do{ number=generateAccount(); } while(accounts.some(a=>a.number===number));
+let account={number,name,pin,balance:0,transactions:[]};
+accounts.push(account);
+localStorage.setItem("accounts",JSON.stringify(accounts));
+alert("Account created! Your Account Number: "+number);
+showLogin();
+}
+
+// Login
+function login(){
+let acc=document.getElementById("loginAcc").value.trim();
+let pin=document.getElementById("loginPin").value.trim();
+if(!/^\d+$/.test(acc)){ document.getElementById("loginMsg").innerText="Account Number must contain numbers only."; return; }
+if(!/^\d+$/.test(pin)){ document.getElementById("loginMsg").innerText="PIN must contain numbers only."; return; }
+let user=accounts.find(a=>a.number==acc && a.pin==pin);
+if(user){ currentUser=user; document.getElementById("loginScreen").classList.add("hidden"); document.getElementById("app").classList.remove("hidden"); document.getElementById("welcome").innerText="Welcome "+user.name; updateUI(); }
+else{ document.getElementById("loginMsg").innerText="Invalid login"; }
+}
+
+// Update UI
+function updateUI(){
+document.getElementById("balance").innerText="Balance: $"+currentUser.balance;
+let table=document.getElementById("transactionTable"); table.innerHTML='';
+currentUser.transactions.forEach((t,i)=>{ table.innerHTML+=`<tr><td>${i+1}</td><td>${t.type}</td><td>$${t.amount}</td><td>${t.date}</td></tr>`; });
+localStorage.setItem("accounts",JSON.stringify(accounts));
+}
+
+// Show Pages
+function showPage(page){ document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden")); document.getElementById(page+"Page").classList.remove("hidden"); }
+
+// Deposit / Withdraw / Transfer
+function deposit(){ let amt=parseFloat(document.getElementById("depositAmount").value); if(amt<=0){ alert("Invalid amount"); return; } currentUser.balance+=amt; currentUser.transactions.push({type:"Deposit",amount:amt,date:new Date().toLocaleString()}); updateUI(); }
+function withdraw(){ let amt=parseFloat(document.getElementById("withdrawAmount").value); if(amt>currentUser.balance){ alert("Insufficient funds"); return; } currentUser.balance-=amt; currentUser.transactions.push({type:"Withdraw",amount:amt,date:new Date().toLocaleString()}); updateUI(); }
+function transfer(){ let acc=document.getElementById("transferAccount").value.trim(); let amt=parseFloat(document.getElementById("transferAmount").value); if(!/^\d+$/.test(acc)){ alert("Recipient Account Number must contain numbers only."); return; } let recipient=accounts.find(a=>a.number==acc); if(!recipient){ alert("Account not found"); return; } if(amt>currentUser.balance){ alert("Insufficient balance"); return; } currentUser.balance-=amt; recipient.balance+=amt; currentUser.transactions.push({type:"Transfer Sent",amount:amt,date:new Date().toLocaleString()}); recipient.transactions.push({type:"Transfer Received",amount:amt,date:new Date().toLocaleString()}); updateUI(); }
+function logout(){ location.reload(); }
+
+// Input restrictions
+document.getElementById("newName").addEventListener("input",function(){this.value=this.value.replace(/[^A-Za-z\s]/g,"");});
+document.getElementById("newPin").addEventListener("input",function(){this.value=this.value.replace(/\D/g,"");});
+document.getElementById("loginAcc").addEventListener("input",function(){this.value=this.value.replace(/\D/g,"");});
+document.getElementById("loginPin").addEventListener("input",function(){this.value=this.value.replace(/\D/g,"");});
+document.getElementById("transferAccount").addEventListener("input",function(){this.value=this.value.replace(/\D/g,"");});
+</script>
+</body>
+</html>
